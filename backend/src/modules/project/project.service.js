@@ -104,7 +104,7 @@ export const addProjectMember = async (memberId, projectId, role) => {
     return member;
 };
 
-export const removeProjectMember = async (ownerId, projectId, userId) => {
+export const removeProjectMember = async (projectId, userId) => {
     const project = await Project.findByPk(projectId);
     if (!project) throw new ApiError(404, 'Project not found');
 

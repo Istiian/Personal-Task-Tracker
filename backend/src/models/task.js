@@ -29,7 +29,7 @@ const Task = sequelize.define('Task', {
     },
     projectId: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         foreignKey: true,
         references: {
             model: 'Projects',

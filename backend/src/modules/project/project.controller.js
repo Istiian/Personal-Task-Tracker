@@ -88,10 +88,9 @@ export const addProjectMemberController = async (req, res, next) => {
 
 export const removeProjectMemberController = async (req, res, next) => {
     try {
-        const userId = req.user.id;
         const projectId = req.params.projectId;
         const memberUserId = req.params.memberId;
-        await removeProjectMember(userId, projectId, memberUserId);
+        await removeProjectMember( projectId, memberUserId);
         res.status(200).json({
             success: true,
             message: 'Member removed successfully'

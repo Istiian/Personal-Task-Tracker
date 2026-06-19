@@ -7,10 +7,10 @@ export const registerSchema = joi.object({
     email: joi.string().email().required(),
     firstName: joi.string().min(1).max(50).required(),
     lastName: joi.string().min(1).max(50).required(),
-});
+})
 
 export const changeInfoSchema = joi.object({
-    email: joi.string().email().required(),
+    email: joi.string().email(),
     firstName: joi.string().min(1).max(50),
     lastName: joi.string().min(1).max(50),
 });

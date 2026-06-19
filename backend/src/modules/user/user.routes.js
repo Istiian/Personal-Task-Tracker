@@ -5,7 +5,8 @@ import {
     changeInfoHandler,
     changePasswordHandler,
     getAllProjectsController,
-    getUserTasksController
+    getUserTasksController,
+    getUserInfoHandler
 } from './user.controller.js';
 import {
     registerSchema,
@@ -27,6 +28,11 @@ router.patch('/me',
     passport.authenticate('jwt', { session: false }),
     validateForm(changeInfoSchema),
     changeInfoHandler);
+
+// get User Information
+router.get('/me',
+    passport.authenticate('jwt', { session: false }),
+    getUserInfoHandler);
 
 // Change User Password
 router.patch('/me/password',

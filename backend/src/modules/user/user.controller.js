@@ -1,8 +1,7 @@
-import { changeInfo, changePassword, registerUser, getOwnedProjects, getUserTasks } from './user.service.js';
+import { changeInfo, changePassword, registerUser, getOwnedProjects, getUserTasks, getUserInfo} from './user.service.js';
 
 export const changeInfoHandler = async (req, res, next) => {
     const userId = req.user.id;
-    console.log('User ID from token:', userId);
     const { firstName, lastName, email } = req.body;
     
     try {
@@ -16,6 +15,20 @@ export const changeInfoHandler = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getUserInfoHandler = async (req, res, next) => {
+    const userId = req.user.id;
+    try {
+        const userInfo = await getUserInfo(userId);
+        res.status(200).json({
+            success: true,
+            message: 'User information fetched successfully',
+            user: userInfo
+        });
+    } catch (error) {
+        next(error);
+    }
+}
 
 export const changePasswordHandler = async (req, res, next) => {
     const userId = req.user.id;

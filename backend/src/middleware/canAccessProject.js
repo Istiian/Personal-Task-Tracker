@@ -1,4 +1,3 @@
-import User from '../models/User.js';
 import { ApiError } from '../util/apiError.js';
 import Project from '../models/project.js';
 import ProjectMember from '../models/project_member.js';
@@ -22,7 +21,7 @@ export const canAccessProject = (...roles) => {
 
         // Check membership separately — owners may not have a ProjectMember row
         const projectMember = await ProjectMember.findOne({ where: { projectId, userId } });
-        const isOwner = project.ownerId === userId;
+        const isOwner = Number(project.ownerId) === Number(userId);
         const userRole = projectMember?.role || null;
 
         const isApprovedOwner = roles.includes('owner') && isOwner;

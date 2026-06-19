@@ -14,7 +14,7 @@ export const getUserInfo = async (userId) => {
     if (user) {
         return JSON.parse(user);
     } else {
-        const user = await User.findOne({
+        user = await User.findOne({
             where: { id: userId },
             attributes: ['id', 'firstName', 'lastName', 'email'],
         });
@@ -32,8 +32,10 @@ export const changeInfo = async (firstName, lastName, email, userId) => {
     if (!user) throw new ApiError(404, 'User not found');
 
     // Ensure no other account already uses this email
-    const emailInUse = await User.findOne({ where: { email, id: { [Op.ne]: userId } } });
-    if (emailInUse) throw new ApiError(400, 'Email already in use');
+    if (email) {
+        const emailInUse = await User.findOne({ where: { email, id: { [Op.ne]: userId } } });
+        if (emailInUse) throw new ApiError(400, 'Email already in use');
+    }
 
     // Only update fields that were provided
     user.firstName = firstName || user.firstName;
@@ -64,6 +66,9 @@ export const changePassword = async (passwordData, userId) => {
 export const registerUser = async (userData) => {
     const checkEmail = await User.findOne({ where: { email: userData.email } });
     if (checkEmail) throw new ApiError(400, 'Email already in use');
+
+    const checkUsername = await User.findOne({ where: { username: userData.username } });
+    if (checkUsername) throw new ApiError(400, 'Username already in use');
 
     const hashedPassword = await hashPassword(userData.password);
     const user = await User.create({ ...userData, password: hashedPassword });

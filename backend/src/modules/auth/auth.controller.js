@@ -39,7 +39,6 @@ export const createAccessTokenHandler = async (req, res, next) => {
         const refreshToken = getRefreshTokenFromRequest(req);
         const tokens = await refreshAccessToken(refreshToken);
 
-        setRefreshTokenCookie(res, tokens.refreshToken);
         res.status(200).json({
             message: 'Token refreshed successfully',
             accessToken: tokens.accessToken,

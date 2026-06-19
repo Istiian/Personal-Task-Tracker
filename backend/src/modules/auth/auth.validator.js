@@ -3,10 +3,8 @@ import joi from 'joi';
 const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 export const loginSchema = joi.object({
-    username: joi.string().min(3).max(30).required(),
-    password: joi.string().min(6).required().pattern(passwordPattern).messages({
-        'string.pattern.base': 'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.',
-    }),
+    username: joi.string().required(),
+    password: joi.string().required()
 });
 
 export const otpSchema = joi.object({

@@ -1,4 +1,3 @@
-import User from '../models/User.js';
 import { ApiError } from '../util/apiError.js';
 import Project from '../models/project.js';
 import ProjectMember from '../models/project_member.js';

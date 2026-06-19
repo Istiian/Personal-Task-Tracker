@@ -19,6 +19,7 @@ export const loginUser = async (loginData) => {
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
+    redisClient.setEx(`refreshToken:${refreshToken}`, 7 * 24 * 60 * 60, user.id.toString()); // Store refresh token with 7 days expiration
     return { accessToken, refreshToken };
 };
 
@@ -66,14 +67,16 @@ export const refreshAccessToken = async (refreshToken) => {
     if (!decoded) {
         throw new ApiError(401, 'Invalid or expired refresh token');
     }
+    const storedToken = await redisClient.get(`refreshToken:${refreshToken}`);
+    if (!storedToken || storedToken !== decoded.id.toString()) {
+        throw new ApiError(401, 'Refresh token does not match any active session');
+    }
 
     const user = await User.findByPk(decoded.id);
     if (!user) {
         throw new ApiError(404, 'User not found');
     }
 
-    // Issue a new pair so the refresh token rotates on every use
     const accessToken = generateAccessToken(user);
-    const newRefreshToken = generateRefreshToken(user);
-    return { accessToken, refreshToken: newRefreshToken };
+    return { accessToken };
 };

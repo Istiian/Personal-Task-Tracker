@@ -28,7 +28,7 @@ const app = express();
 
 app.use(cors({
     origin: process.env.CLIENT_URL || true, // allow all origins if CLIENT_URL is not set
-    credentials: true, // required for cookies (refresh token)
+    credentials: true, 
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
